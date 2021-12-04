@@ -1,20 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import alanBtn from '@alan-ai/alan-sdk-web';
+import NewsCards from './components/NewsCards/NewsCards';
 
 
-const alankey = process.env.REACT_APP_ALAN_KEY;
+const alanKey = process.env.REACT_APP_ALAN_KEY;
 
 const App = () => {
+  const [newsArticles, setNewsArticles] = useState([]);
 
   useEffect(() => {
     alanBtn({
-      key: alankey
+      key: alanKey,
+      onCommand: ({ command, articles }) => {
+        if(command === 'newHeadlines') {
+          setNewsArticles(articles);
+        }
+      }
     })
   }, [])
 
   return (
-    <div className="App">
+    <div>
       <h1>Alan AI News App</h1>
+      <NewsCards articles={newsArticles} />
     </div>
   );
 }
